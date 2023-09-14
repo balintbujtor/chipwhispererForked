@@ -13,7 +13,7 @@
 **
 **  Environment : System Workbench for MCU
 **
-**  Distribution: The file is distributed ï¿½as is,ï¿½ without any warranty
+**  Distribution: The file is distributed “as is,” without any warranty
 **                of any kind.
 **
 *****************************************************************************
@@ -60,7 +60,7 @@ register char * stack_ptr asm("sp");
  _sbrk
  Increase program data space. Malloc and related functions depend on this
 **/
-char *_sbrk(int incr)
+caddr_t _sbrk(int incr)
 {
 	extern char end asm("end");
 	static char *heap_end;
@@ -73,11 +73,11 @@ char *_sbrk(int incr)
 	if (heap_end + incr > stack_ptr)
 	{
 		errno = ENOMEM;
-		return (char *) -1;
+		return (caddr_t) -1;
 	}
 
 	heap_end += incr;
 
-	return (char *) prev_heap_end;
+	return (caddr_t) prev_heap_end;
 }
 
